@@ -1,0 +1,3 @@
+# For ubuntu disco
+libcurl4-openssl-dev
+libssl-dev

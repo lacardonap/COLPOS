@@ -1,27 +1,19 @@
 import os
 
-from src.gps.config.enums import EnumDataSourceType
-from src.gps.config.key_names import KeyNames
-
+# DATA OUTPUT DIRECTORIES
 # PREFIX_DIR = os.getcwd()
-PREFIX_DIR = '/home/grand/Desktop/TEST'
-PREFIX_ORBITS_DIR = os.path.join(PREFIX_DIR, 'DATA', 'ORBITS')
+PREFIX_DATA_DIR = '/home/grand/Desktop/TEST'
+PREFIX_ORBITS_DIR = os.path.join(PREFIX_DATA_DIR, 'DATA', 'ORBITS')
+PREFIX_CLOCKS_DIR = os.path.join(PREFIX_DATA_DIR, 'DATA', 'CLOCKS')
 BRDC_ORBITS_DIR = os.path.join(PREFIX_ORBITS_DIR, 'BRDC')
 IGS_FINAL_ORBITS_DIR = os.path.join(PREFIX_ORBITS_DIR, 'IGS_FINAL')
+IGS_30_SEC_CLOCK_DIR = os.path.join(PREFIX_CLOCKS_DIR, 'IGS_30_SEC')
 
-FTP_DATA_SOURCES = {
-    EnumDataSourceType.ESA: {
-        KeyNames.FTP_SERVER: 'gssc.esa.int',
-        KeyNames.FTP_PRODUCT_BASE_PATH: os.path.join('gnss'),
-        KeyNames.FTP_PORT: '22',
-        KeyNames.FTP_USERNAME: 'anonymous',
-        KeyNames.FTP_PASSWORD: ''
-    },
-    EnumDataSourceType.CDDIS: {
-        KeyNames.FTP_SERVER: 'cddis.gsfc.nasa.gov',
-        KeyNames.FTP_PRODUCT_BASE_PATH: os.path.join('gnss'),
-        KeyNames.FTP_PORT: '22',
-        KeyNames.FTP_USERNAME: 'anonymous',
-        KeyNames.FTP_PASSWORD: ''
-    }
-}
+# FTPS DATA SOURCES
+FTP_SERVER_ESA = 'gssc.esa.int'
+FTP_SERVER_CDDIS = 'cddis.gsfc.nasa.gov'
+
+# HTTPS DATA SOURCES
+HTTPS_SERVER_CDDIS = 'cddis.nasa.gov'
+EARTH_DATA_NASA_AUTH_HOST = 'urs.earthdata.nasa.gov'
+

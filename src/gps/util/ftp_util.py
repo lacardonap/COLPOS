@@ -16,71 +16,70 @@
  *                                                                         *
  ***************************************************************************/
 """
-import ftplib
 import datetime
+import ftplib
+from netrc import netrc
 import os
 import sys
-from pathlib import Path
+import logging as log
+
+from src.gps.util.file_util import FileUtil
 
 
 class FTPUtil:
 
     @staticmethod
-    def check_dir(target_dir):
-        """
-        check that local target directory exists, create it if not
-        :param target_dir: local target dir (str)
-        """
-        if not os.path.isdir(target_dir):
-            Path(target_dir).mkdir(parents=True, exist_ok=True)
-
-    @staticmethod
-    def delete_files(path_dir):
-        """
-        delete all files in given local folder
-        :param path_dir: targ
-        """
-        for the_file in os.listdir(path_dir):
-            file_path = os.path.join(path_dir, the_file)
-            try:
-                if os.path.isfile(file_path):
-                    os.unlink(file_path)
-            except Exception as e:
-                print(e)
-
-    @staticmethod
-    def ftp_download(server, username, password, remote_dir, remote_file, local_dir, overwrite=False):
+    def ftp_download(server, remote_dir, remote_file, local_dir, overwrite=False):
         """
         Generic function to download a file using ftp.
         Place it in the local_directory.
         If it already exists, don't download.
         Return the full local filename.
         :param server: ip/dns ftp server
-        :param username: ftp login user
-        :param password: ftp password user
         :param remote_dir: target directory on the ftp server
-        :param remote_file: target file name in ftp
+        :param remote_file: target file name in ftp server
         :param local_dir: path where the file will be downloaded
         :param overwrite: overwrite file if exists
-        :return: full path where the file was downloaded to the local server 
+        :return: full path where the file was downloaded to the local server
         """
-        FTPUtil.check_dir(local_dir)  # check that target dir exists, if not create it
-        local_fullname = os.path.join(local_dir, remote_file)
-        print("ftp_download start at ", datetime.datetime.utcnow())
-        if not os.path.exists(local_fullname) or overwrite:
-            print('Remote: ', remote_dir + " " + remote_file)
-            print('Local : ', local_fullname)
-            sys.stdout.flush()
-            ftp = ftplib.FTP(server)  # Establish the connection
-            ftp.login(username, password)
-            ftp.cwd(remote_dir)  # Change to the proper directory
-            fhandle = open(local_fullname, 'wb')
-            ftp.retrbinary('RETR ' + remote_file, fhandle.write)
-            fhandle.close()
-            ftp.close()
-        else:
-            print(remote_file, " already exists locally, not downloading.")
-        print("ftp_download Done ", datetime.datetime.utcnow())
-        sys.stdout.flush()
-        return local_fullname
+        _netrc = netrc()
+        _username, _account_pass, _pass = _netrc.authenticators(server)
 
+        local_fullname = os.path.join(local_dir, remote_file)
+        remote_fullname = remote_dir + " " + remote_file
+        log.info("ftp_download start at {}".format(datetime.datetime.utcnow()))
+        if not os.path.exists(local_fullname) or overwrite:
+            log.info('Remote: ' + remote_fullname)
+            log.info('Local : ' + local_fullname)
+            sys.stdout.flush()
+
+            try:
+                ftp = ftplib.FTP(server)  # Establish the connection
+                ftp.login(_username, _pass)
+
+                try:
+                    ftp.cwd(remote_dir)  # Change to the proper directory
+                except ftplib.error_perm:
+                    log.error("Remote directory not exist")
+                    return None
+
+                try:
+                    if ftp.size(remote_file):
+                        FileUtil.check_dir(local_dir)  # check that target dir exists, if not create it
+                        fhandle = open(local_fullname, 'wb')
+                        ftp.retrbinary('RETR ' + remote_file, fhandle.write)
+                        fhandle.close()
+                except ftplib.error_perm:
+                    log.error("File not exist")
+                    return None
+
+                ftp.close()
+            except ftplib.error_perm:
+                log.error("An error occurred while trying to retrieve the file from the server.")
+                return None
+        else:
+            log.info(remote_file + " already exists locally, not downloading.")
+        log.info("ftp_download Done {}".format(datetime.datetime.utcnow()))
+        sys.stdout.flush()
+
+        return local_fullname
