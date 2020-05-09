@@ -18,3 +18,9 @@ dm.retrieve_igs_final_gps_orbit(dtu)
 
 # Download igs 30 sec clock products
 dm.retrieve_igs_30_sec_clock(dtu)
+
+# Download erp
+dm.retrieve_igs_erp(dtu)
+
+# Download eph
+dm.retrieve_igs_eph(dtu)

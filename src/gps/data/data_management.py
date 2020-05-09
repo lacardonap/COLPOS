@@ -31,3 +31,9 @@ class DataManagement:
 
     def retrieve_igs_30_sec_clock(self, dtu):
         return self.cddis_ds.get_igs_30_sec_clock(dtu)
+
+    def retrieve_igs_erp(self, dtu):
+        return self.cddis_ds.get_earth_orientation_parameters(dtu)
+
+    def retrieve_igs_eph(self, dtu):
+        return self.cddis_ds.get_satellite_orbit_solution(dtu)

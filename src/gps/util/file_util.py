@@ -19,7 +19,7 @@
 import os
 import logging as log
 from pathlib import Path
-
+from netrc import netrc, NetrcParseError
 
 class FileUtil:
     @staticmethod
@@ -44,3 +44,20 @@ class FileUtil:
                     os.unlink(file_path)
             except Exception as e:
                 log.error(e)
+
+    @staticmethod
+    def get_credentials(server):
+        try:
+            _netrc = netrc()  # authentication credentials are obtained from the netrc file
+            _username, _account_pass, _pass = _netrc.authenticators(server)
+        except FileNotFoundError:
+            log.error(".netrc file not exist")
+            return None
+        except TypeError:
+            log.error(".netrc file is empty")
+            return None
+        except NetrcParseError:
+            log.error(".netrc don't have the correct to access, permissions must restrict access to only the owner")
+            return None
+
+        return _username, _pass

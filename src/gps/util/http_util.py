@@ -20,7 +20,6 @@ import datetime
 import logging as log
 import os
 import sys
-from netrc import netrc
 
 import requests
 
@@ -72,8 +71,13 @@ class HTTPUtil:
 
         log.info("http_download start at {}".format(datetime.datetime.utcnow()))
 
-        _netrc = netrc()  # authentication credentials are obtained from the netrc file
-        _username, _account_pass, _pass = _netrc.authenticators(server)
+        credentials = FileUtil.get_credentials(server)
+        if not credentials:
+            log.info("it was not possible to obtain the credentials from .netrc")
+            return None
+
+        _username = credentials[0]
+        _pass = credentials[1]
 
         session = SessionWithHeaderRedirection(_username, _pass)
 

@@ -18,7 +18,6 @@
 """
 import datetime
 import ftplib
-from netrc import netrc
 import os
 import sys
 import logging as log
@@ -42,8 +41,13 @@ class FTPUtil:
         :param overwrite: overwrite file if exists
         :return: full path where the file was downloaded to the local server
         """
-        _netrc = netrc()
-        _username, _account_pass, _pass = _netrc.authenticators(server)
+        credentials = FileUtil.get_credentials(server)
+        if not credentials:
+            log.info("it was not possible to obtain the credentials from .netrc")
+            return None
+
+        _username = credentials[0]
+        _pass = credentials[1]
 
         local_fullname = os.path.join(local_dir, remote_file)
         remote_fullname = remote_dir + " " + remote_file
