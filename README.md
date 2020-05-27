@@ -31,6 +31,15 @@ unzip teqc_CentOSLx86_64d.zip
 cp teqc /usr/local/bin
 ```
 
+[Hatanaka-compressed format](https://terras.gsi.go.jp/ja/crx2rnx.html)
+RNXCMP is the software for compression/restoration of RINEX observation files developed by Y. Hatanaka of GSI. It converts the foramt of GNSS observation files from the RINEX format (version 2.xx or 3.xx) to a compressed format (the CompactRINEX format, or often called the Hatanaka-compressed format) and vice versa.
+
+
+You should have installed csh
+```
+sudo apt install csh
+```
+
 ## Install GCC
 Install the GNU Compiler Collection (GCC)
 ```

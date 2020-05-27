@@ -18,8 +18,10 @@
 """
 import os
 import logging as log
+from shutil import copy
 from pathlib import Path
 from netrc import netrc, NetrcParseError
+
 
 class FileUtil:
     @staticmethod
@@ -61,3 +63,13 @@ class FileUtil:
             return None
 
         return _username, _pass
+
+    @staticmethod
+    def copy_and_decompress(proc_dir, gfile):
+        output_file = None
+        if os.path.isfile(gfile):
+            FileUtil.check_dir(proc_dir)
+            copy_file = copy(gfile, proc_dir)
+            output_file = os.path.splitext(copy_file)[0]
+            os.system("gunzip {}".format(copy_file))
+        return output_file

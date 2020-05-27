@@ -16,7 +16,7 @@
  *                                                                         *
  ***************************************************************************/
 """
-import datetime
+from datetime import datetime
 import ftplib
 import os
 import sys
@@ -51,7 +51,7 @@ class FTPUtil:
 
         local_fullname = os.path.join(local_dir, remote_file)
         remote_fullname = remote_dir + " " + remote_file
-        log.info("ftp_download start at {}".format(datetime.datetime.utcnow()))
+        log.info("ftp_download start at {}".format(datetime.utcnow()))
         if not os.path.exists(local_fullname) or overwrite:
             log.info('Remote: ' + remote_fullname)
             log.info('Local : ' + local_fullname)
@@ -83,7 +83,7 @@ class FTPUtil:
                 return None
         else:
             log.info(remote_file + " already exists locally, not downloading.")
-        log.info("ftp_download Done {}".format(datetime.datetime.utcnow()))
+        log.info("ftp_download Done {}".format(datetime.utcnow()))
         sys.stdout.flush()
 
         return local_fullname

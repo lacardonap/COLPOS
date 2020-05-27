@@ -24,6 +24,7 @@ from src.gps.config.general_config import (FTP_SERVER_CDDIS,
                                            IGS_ERP_DIR,
                                            IGS_EPH_DIR,
                                            IGS_30_SEC_CLOCK_DIR,
+                                           PREFIX_RINEX_DIR,
                                            IGS_FINAL_ORBITS_DIR)
 from src.gps.util.ftp_util import FTPUtil
 from src.gps.util.http_util import HTTPUtil
@@ -48,7 +49,7 @@ class CDDISDataSource:
         :return: path of the brdc downloaded file
         """
         local_dir = os.path.join(BRDC_ORBITS_DIR, dtu.syear(), dtu.sdoy())
-        remote_dir = os.path.join('gnss', 'data', 'daily', dtu.syear(), 'brdc')
+        remote_dir = os.path.join('gnss/data/daily', dtu.syear(), 'brdc')
         remote_file = "brdc{doy}0.{year}n.Z".format(doy=dtu.sdoy(), year=dtu.yy())
         FTPUtil.ftp_download(self.__ftp_server, remote_dir, remote_file, local_dir)
         return os.path.join(local_dir, remote_file)
@@ -62,7 +63,7 @@ class CDDISDataSource:
         :return: path of the igs final gps orbit downloaded file
         """
         local_dir = os.path.join(IGS_FINAL_ORBITS_DIR, dtu.syear(), dtu.sdoy())
-        remote_dir = os.path.join('gnss', 'products', dtu.sgpsweek())
+        remote_dir = os.path.join('gnss/products', dtu.sgpsweek())
         remote_file = "igs{gpsweek}{gpsweekday}.sp3.Z".format(gpsweek=dtu.sgpsweek(), gpsweekday=dtu.sgpsweekday())
         FTPUtil.ftp_download(self.__ftp_server, remote_dir, remote_file, local_dir)
         return os.path.join(local_dir, remote_file)
@@ -75,7 +76,7 @@ class CDDISDataSource:
         :return: path of the igs 30 seconds clock downloaded file
         """
         local_dir = os.path.join(IGS_30_SEC_CLOCK_DIR, dtu.syear(), dtu.sdoy())
-        remote_dir = os.path.join('archive', 'gnss', 'products', dtu.sgpsweek())
+        remote_dir = os.path.join('archive/gnss/products', dtu.sgpsweek())
         remote_file = "igs{gpsweek}{gpsweekday}.clk_30s.Z".format(gpsweek=dtu.sgpsweek(), gpsweekday=dtu.sgpsweekday())
         HTTPUtil.http_download_cddis_ssl(self.__https_server, remote_dir, remote_file, local_dir)
         return os.path.join(local_dir, remote_file)
@@ -90,7 +91,7 @@ class CDDISDataSource:
         :return: path of the earth orientation parameters downloaded file
         """
         local_dir = os.path.join(IGS_ERP_DIR, dtu.syear(), dtu.sdoy())
-        remote_dir = os.path.join('archive', 'gnss', 'products', dtu.sgpsweek())
+        remote_dir = os.path.join('archive/gnss/products', dtu.sgpsweek())
         remote_file = "igs{gpsweek}7.erp.Z".format(gpsweek=dtu.sgpsweek())
         HTTPUtil.http_download_cddis_ssl(self.__https_server, remote_dir, remote_file, local_dir)
         return os.path.join(local_dir, remote_file)
@@ -105,7 +106,24 @@ class CDDISDataSource:
         :return: path of the earth orientation parameters downloaded file
         """
         local_dir = os.path.join(IGS_EPH_DIR, dtu.syear(), dtu.sdoy())
-        remote_dir = os.path.join('archive', 'gnss', 'products', dtu.sgpsweek())
+        remote_dir = os.path.join('archive/gnss/products', dtu.sgpsweek())
         remote_file = "cod{gpsweek}{gpsweekday}.eph.Z".format(gpsweek=dtu.sgpsweek(), gpsweekday=dtu.sgpsweekday())
+        HTTPUtil.http_download_cddis_ssl(self.__https_server, remote_dir, remote_file, local_dir)
+        return os.path.join(local_dir, remote_file)
+
+    def get_rinex_file(self, dtu, station):
+        """
+        IGS RINEX File
+        https://cddis.nasa.gov/Data_and_Derived_Products/GNSS/daily_30second_data.html
+        https://cddis.nasa.gov/archive/gnss/data/daily/2020/045/20o/bogt0450.20o.Z
+        {year}/{doy}/{yy}o/{station}{doy}0.{yy}o.Z
+        :param dtu: DateTimeUtil
+        :param station: station name (4 digits)
+        :return: path of the rinex file
+        """
+        station = station.lower()  # the station name is in lowercase by standard in cddis server
+        local_dir = os.path.join(PREFIX_RINEX_DIR, dtu.syear(), dtu.sdoy())
+        remote_dir = os.path.join('archive/gnss/data/daily', dtu.syear(), dtu.sdoy(), dtu.yy()+'o')
+        remote_file = "{station}{doy}0.{year}o.Z".format(station=station, doy=dtu.sdoy(), year=dtu.yy())
         HTTPUtil.http_download_cddis_ssl(self.__https_server, remote_dir, remote_file, local_dir)
         return os.path.join(local_dir, remote_file)
