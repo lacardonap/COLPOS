@@ -24,7 +24,7 @@ from src.gps.config.general_config import (FTP_SERVER_CDDIS,
                                            IGS_ERP_DIR,
                                            IGS_EPH_DIR,
                                            IGS_30_SEC_CLOCK_DIR,
-                                           PREFIX_RINEX_DIR,
+                                           RINEX_DIR,
                                            IGS_FINAL_ORBITS_DIR)
 from src.gps.util.ftp_util import FTPUtil
 from src.gps.util.http_util import HTTPUtil
@@ -122,7 +122,7 @@ class CDDISDataSource:
         :return: path of the rinex file
         """
         station = station.lower()  # the station name is in lowercase by standard in cddis server
-        local_dir = os.path.join(PREFIX_RINEX_DIR, dtu.syear(), dtu.sdoy())
+        local_dir = os.path.join(RINEX_DIR, dtu.syear(), dtu.sdoy())
         remote_dir = os.path.join('archive/gnss/data/daily', dtu.syear(), dtu.sdoy(), dtu.yy()+'o')
         remote_file = "{station}{doy}0.{year}o.Z".format(station=station, doy=dtu.sdoy(), year=dtu.yy())
         HTTPUtil.http_download_cddis_ssl(self.__https_server, remote_dir, remote_file, local_dir)

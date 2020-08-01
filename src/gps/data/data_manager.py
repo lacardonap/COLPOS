@@ -23,6 +23,7 @@ class DataManager:
     def __init__(self):
         self._cddis_ds = CDDISDataSource()
         self._dtu = None
+        self._brdc = None
         self._orbit = None
         self._clock = None
         self._erp = None
@@ -32,13 +33,14 @@ class DataManager:
 
     def get_inputs(self, dtu):
         self._dtu = dtu
+        self._brdc = self._cddis_ds.get_brdc_orbits(self._dtu)  # Download BRDC Orbits
         self._orbit = self._cddis_ds.get_igs_final_gps_orbit(self._dtu)  # Download IGS final orbit sp3 format
         self._clock = self._cddis_ds.get_igs_30_sec_clock(self._dtu)  # Download IGS 30 sec clock products
         self._erp = self._cddis_ds.get_earth_orientation_parameters(self._dtu)  # Download Earth Rotation Parameters
         self._eph = self._cddis_ds.get_satellite_orbit_solution(self._dtu)  # Download Satellite Orbit solution
 
     def get_inputs_parameters(self):
-        return [self._orbit, self._clock, self._erp, self._eph]
+        return [self._brdc, self._orbit, self._clock, self._erp, self._eph]
 
     def get_rinexs(self, stations):
         self._stations = stations
@@ -68,3 +70,7 @@ class DataManager:
     @property
     def rinexs(self):
         return self._rinexs
+
+    @property
+    def brdc(self):
+        return self._brdc
