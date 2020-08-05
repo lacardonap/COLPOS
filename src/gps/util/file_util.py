@@ -73,3 +73,26 @@ class FileUtil:
             output_file = os.path.splitext(copy_file)[0]
             os.system("gunzip {}".format(copy_file))
         return output_file
+
+    @staticmethod
+    def decompress(gfile):
+        output_file = None
+        if os.path.isfile(gfile):
+            output_file = os.path.splitext(gfile)[0]
+            os.system("gunzip {}".format(gfile))
+        return output_file
+
+    @staticmethod
+    def copy_file(src, dst):
+        copy_file = None
+        if os.path.isfile(src):
+            copy_file = copy(src, dst)
+        return copy_file
+
+    @staticmethod
+    def file_exist_no_empty(path):
+        if os.path.exists(path) and os.path.getsize(path) > 0:
+            return True
+        else:
+            log.info("File doesn't exist")
+            return False

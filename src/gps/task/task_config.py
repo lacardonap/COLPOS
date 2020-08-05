@@ -25,18 +25,15 @@ class TaskConfig:
 
     def __init__(self, config):
         self._rinex = config['RINEX']
-        self.processing_type = config['TYPE']
-        self.rinex_meta = RinexMetaInfo(self._rinex)
+        self._processing_type = config['TYPE']
+        self._rinex_meta = RinexMetaInfo(self._rinex)
 
     @property
     def rinex(self):
         return self._rinex
 
     def get_data_time(self):
-        dt = self.rinex_meta.start_date_time
+        dt = self._rinex_meta.start_date_time
         dtu = DataTimeUtil(dt)
         return dtu
 
-    @staticmethod
-    def get_stations():
-        return ['bogt', 'gold']
