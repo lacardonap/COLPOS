@@ -26,6 +26,7 @@ class TaskConfig:
     def __init__(self, config):
         self._rinex = config['RINEX']
         self._processing_type = config['TYPE']
+        self._receiver_email = config['EMAIL']
         self._rinex_meta = RinexMetaInfo(self._rinex)
 
     @property
@@ -40,3 +41,7 @@ class TaskConfig:
     @property
     def rinex_meta(self):
         return self._rinex_meta
+
+    @property
+    def receiver_email(self):
+        return self._receiver_email

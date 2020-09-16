@@ -18,6 +18,7 @@
 """
 import os
 
+from src.gps.config.general_config import REPORT_NAME
 from src.gps.processing.report.gps_processing_report import GPSProcessingReport
 from src.gps.processing.report.gps_data_analysis import GPSDataAnalysis
 
@@ -35,7 +36,7 @@ from src.gps.util.util import dd2dms_label
 class GenerateGPSReport:
     def __init__(self, output_dir):
         self.output_dir = output_dir
-        self.output_report = os.path.join(self.output_dir, 'report.pdf')
+        self.output_report = os.path.join(self.output_dir, REPORT_NAME)
         self.data_analysis = GPSDataAnalysis(self.output_dir)
         self.pdf = GPSProcessingReport(orientation='P', unit='mm', format='A4')
 
@@ -62,3 +63,6 @@ class GenerateGPSReport:
         self.pdf.image_processing(plot_file)
 
         self.pdf.output(self.output_report, 'F')
+
+    def get_report(self):
+        return self.output_report

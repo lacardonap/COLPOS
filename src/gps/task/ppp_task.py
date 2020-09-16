@@ -44,6 +44,9 @@ class PPPTask(GPSTask):
         self.pdf.run(processing_result, self._station_name)
         log.info("Done: Data was copy to {}".format(self._tmp_dir))
 
+        self._mail.send(self._task_config.receiver_email, self.pdf.get_report())
+        log.info("Done: Processing result was send")
+
     def prepare_processing_inputs(self):
         """
         Return uncompress input files

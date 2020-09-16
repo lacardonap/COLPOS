@@ -53,3 +53,15 @@ SDNE_KEY = 'sdne'
 SDEU_KEY = 'sdeu'
 SDUN_KEY = 'sdun'
 PLOT_KEY = 'plot'
+
+# PDF Report name
+REPORT_NAME = 'report.pdf'
+
+# Send email config
+
+# You should config this parameters
+EMAIL_SENDER_ADDRESS = ''
+EMAIL_SENDER_PASSWORD = ''
+
+SMTP_SERVER = 'smtp.gmail.com'
+SMTP_PORT = 587

@@ -19,6 +19,7 @@
 import tempfile
 from src.gps.data.data_manager import DataManager
 from src.gps.processing.report.generate_report import GenerateGPSReport
+from src.gps.processing.report.send_report import SendReport
 
 
 class GPSTask:
@@ -30,6 +31,8 @@ class GPSTask:
         self._data_manager = DataManager()
         self._tmp_dir = tempfile.mkdtemp()
         self.pdf = GenerateGPSReport(self._tmp_dir)
+        self._mail = SendReport()
+
 
     def run(self):
         raise NotImplementedError

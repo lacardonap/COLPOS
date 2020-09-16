@@ -4,7 +4,8 @@ import json
 from src.gps.config.general_config import QUEUE_SERVER, QUEUE_NAME, EXCHANGE_NAME, ROUTING_KEY_NAME
 
 parameters = {'RINEX': '/home/grand/Desktop/TEST/bogt0590.20o',
-              'TYPE': 'PPP'}
+              'TYPE': 'PPP',
+              'EMAIL': 'receiver-email'}
 
 connection = pika.BlockingConnection(pika.ConnectionParameters(QUEUE_SERVER))
 channel = connection.channel()
