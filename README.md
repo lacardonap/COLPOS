@@ -69,3 +69,10 @@ https://computingforgeeks.com/how-to-install-latest-rabbitmq-server-on-ubuntu-li
 
 https://www.rabbitmq.com/tutorials/tutorial-one-python.html
 pip3 install pika --upgrade
+
+We use javascript to send the processing request.
+https://www.rabbitmq.com/tutorials/tutorial-one-javascript.html
+
+You must install npm and node
+https://www.how2shout.com/how-to/how-to-install-node-js-on-ubuntu-19-04.html
+npm install amqplib
