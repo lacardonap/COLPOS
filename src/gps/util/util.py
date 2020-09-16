@@ -59,3 +59,23 @@ def xyz2llh(x, y, z):
         h = p / cs - N
     llh = {'lon': (clambda * 180 / math.pi), 'lat': (theta * 180 / math.pi), 'height': h}
     return llh
+
+
+def dd2dms(dd):
+    negative = dd < 0
+    dd = abs(dd)
+    minutes, seconds = divmod(dd * 3600, 60)
+    degrees, minutes = divmod(minutes, 60)
+    if negative:
+        if degrees > 0:
+            degrees = -degrees
+        elif minutes > 0:
+            minutes = -minutes
+        else:
+            seconds = -seconds
+    return degrees, minutes, seconds
+
+
+def dd2dms_label(dd):
+    degrees, minutes, seconds = dd2dms(dd)
+    return "{}° {}' {}''".format(int(degrees), int(minutes), round(seconds, 6))

@@ -16,8 +16,10 @@
  *                                                                         *
  ***************************************************************************/
 """
+import os
 import logging as log
 
+from src.gps.config.general_config import PROCESSING_FILE_NAME
 from src.gps.util.file_util import FileUtil
 from src.gps.processing.config.dgps_config import DGPSConfig
 from src.gps.processing.processing_manager import ProcessingManager
@@ -37,6 +39,10 @@ class DGPSTask(GPSTask):
         inputs = self.prepare_processing_inputs()
         procs_config = DGPSConfig(inputs)
         ProcessingManager.run_ppp(procs_config)
+
+        log.info("GPS processing report was generate successfully")
+        processing_result = os.path.join(self._tmp_dir, PROCESSING_FILE_NAME)
+        self.pdf.run(processing_result, self._station_name)
 
         log.info("Done: Data was copy to {}".format(self._tmp_dir))
 

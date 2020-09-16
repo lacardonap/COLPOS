@@ -37,3 +37,6 @@ class TaskConfig:
         dtu = DataTimeUtil(dt)
         return dtu
 
+    @property
+    def rinex_meta(self):
+        return self._rinex_meta

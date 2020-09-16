@@ -18,15 +18,18 @@
 """
 import tempfile
 from src.gps.data.data_manager import DataManager
+from src.gps.processing.report.generate_report import GenerateGPSReport
 
 
 class GPSTask:
     def __init__(self, task_config):
         self._task_config = task_config
         self._rinex = task_config.rinex
+        self._station_name = task_config.rinex_meta.station_name
         self._dtu = task_config.get_data_time()
         self._data_manager = DataManager()
         self._tmp_dir = tempfile.mkdtemp()
+        self.pdf = GenerateGPSReport(self._tmp_dir)
 
     def run(self):
         raise NotImplementedError

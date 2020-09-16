@@ -38,3 +38,18 @@ QUEUE_NAME = 'processing_gps'
 EXCHANGE_NAME = ''
 ROUTING_KEY_NAME = 'processing_gps'
 
+# Processing file name
+PROCESSING_FILE_NAME = 'processing_result.txt'
+
+# Processing result keys
+GPST_KEY = 'gpst'
+LAT_KEY = 'lat'
+LON_KEY = 'lon'
+HEIGHT_KEY = 'height'
+SDN_KEY = 'sdn'
+SDE_KEY = 'sde'
+SDU_KEY = 'sdu'
+SDNE_KEY = 'sdne'
+SDEU_KEY = 'sdeu'
+SDUN_KEY = 'sdun'
+PLOT_KEY = 'plot'
