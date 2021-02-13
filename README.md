@@ -3,6 +3,13 @@ Online GPS Data Processing Service
 
 This is a collection of python scripts for GPS data processing using PPP or DGPS of RINEX file.
 
+This product is free software and it was developed as a thesis work for the  [master's degree in Information and Communication Sciencies](https://rita.udistrital.edu.co/mciencias/) at Francisco José de Caldas District University.
+
+Special thanks to:
+
+* Professor Álvaro Espinal Ortega
+* Professor ‪Héctor Mora Páez‬
+
 ## Processing software - RTKLib
 
 ### [RTKLib](http://www.rtklib.com/) 
