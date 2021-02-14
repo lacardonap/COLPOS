@@ -1,8 +1,11 @@
+import os
 import logging as log
 import pika
 import json
+import tempfile
 
 
+import urllib.request
 from datetime import datetime
 from src.gps.config.general_config import QUEUE_SERVER, QUEUE_NAME
 from src.gps.task.dgps_task import DGPSTask
@@ -16,6 +19,15 @@ def callback(ch, method, properties, body):
     log.basicConfig(format='%(levelname)s:%(message)s', level=log.INFO)
     request_config = json.loads(body)  # processing parameters
 
+    # The user sends a url of the rinex file, the file must be downloaded to be processed.
+    temp_rinex_path = os.path.join(tempfile.mkdtemp(), 'rinex_file')
+    try:
+        urllib.request.urlretrieve(request_config['RINEX'], temp_rinex_path)
+    except:
+        print("an error occurred while trying to download rinex file")
+        return
+
+    request_config['RINEX'] = temp_rinex_path
     if not FileUtil.file_exist_no_empty(request_config['RINEX']):
         log.error("Finish processing because RINEX file doesn't exist or is empty {}".format(datetime.utcnow()))
         return
