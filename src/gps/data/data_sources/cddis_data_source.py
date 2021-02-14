@@ -26,7 +26,6 @@ from src.gps.config.general_config import (FTP_SERVER_CDDIS,
                                            IGS_30_SEC_CLOCK_DIR,
                                            RINEX_DIR,
                                            IGS_FINAL_ORBITS_DIR)
-from src.gps.util.ftp_util import FTPUtil
 from src.gps.util.http_util import HTTPUtil
 
 
@@ -49,9 +48,9 @@ class CDDISDataSource:
         :return: path of the brdc downloaded file
         """
         local_dir = os.path.join(BRDC_ORBITS_DIR, dtu.syear(), dtu.sdoy())
-        remote_dir = os.path.join('gnss/data/daily', dtu.syear(), 'brdc')
+        remote_dir = os.path.join('archive/gnss/data/daily', dtu.syear(), 'brdc')
         remote_file = "brdc{doy}0.{year}n.Z".format(doy=dtu.sdoy(), year=dtu.yy())
-        FTPUtil.ftp_download(self.__ftp_server, remote_dir, remote_file, local_dir)
+        HTTPUtil.http_download_cddis_ssl(self.__https_server, remote_dir, remote_file, local_dir)
         return os.path.join(local_dir, remote_file)
 
     def get_igs_final_gps_orbit(self, dtu):
@@ -63,9 +62,9 @@ class CDDISDataSource:
         :return: path of the igs final gps orbit downloaded file
         """
         local_dir = os.path.join(IGS_FINAL_ORBITS_DIR, dtu.syear(), dtu.sdoy())
-        remote_dir = os.path.join('gnss/products', dtu.sgpsweek())
+        remote_dir = os.path.join('archive/gnss/products', dtu.sgpsweek())
         remote_file = "igs{gpsweek}{gpsweekday}.sp3.Z".format(gpsweek=dtu.sgpsweek(), gpsweekday=dtu.sgpsweekday())
-        FTPUtil.ftp_download(self.__ftp_server, remote_dir, remote_file, local_dir)
+        HTTPUtil.http_download_cddis_ssl(self.__https_server, remote_dir, remote_file, local_dir)
         return os.path.join(local_dir, remote_file)
 
     def get_igs_30_sec_clock(self, dtu):
