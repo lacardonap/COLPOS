@@ -2,3 +2,4 @@ gnsscal==1.1.1
 requests==2.23.0
 pika~=1.1.0
 python3-pika~=0.9.14
+Flask
